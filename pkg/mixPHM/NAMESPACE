@@ -1,0 +1,14 @@
+import("stats", "graphics")
+export(phmclust)
+export(msBIC)
+export(stableEM)
+export(screeBIC)
+export(plot.hazard)
+export(plot.survival)
+export(plot.profile)
+
+S3method(print, mws)
+S3method(summary, mws)
+S3method(logLik, mws)
+S3method(print, BICmat)
+
