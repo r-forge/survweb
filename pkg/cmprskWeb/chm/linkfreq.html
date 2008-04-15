@@ -1,0 +1,97 @@
+<html><head><title>Transition frequencies</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>linkfreq(cmprskWeb)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   linkfreq">
+<param name="keyword" value="R:   print.linkfreq">
+<param name="keyword" value=" Transition frequencies">
+</object>
+
+
+<h2>Transition frequencies</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Utility function for determining the transition frequencies.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+linkfreq(from, to, linkcut = 0.001)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>from</code></td>
+<td>
+vector with starting pages</td></tr>
+<tr valign="top"><td><code>to</code></td>
+<td>
+vector with landing pages</td></tr>
+<tr valign="top"><td><code>linkcut</code></td>
+<td>
+Cutpoint for excluding links (see details)</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+A value of <code>linkcut = 0.001</code> means that links used in more than 0.1% of the transitions 
+are taken into account for frequency computation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+Returns an object of class <code>"linkfreq"</code>
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>freqlink</code></td>
+<td>
+Transition frequencies as data frame.</td></tr>
+<tr valign="top"><td><code>linktable</code></td>
+<td>
+Transition frequencies as table.</td></tr>
+<tr valign="top"><td><code>fromSum</code></td>
+<td>
+Vector with starting page margins.</td></tr>
+<tr valign="top"><td><code>toSum</code></td>
+<td>
+Vector with landing page margins.</td></tr>
+</table>
+<p>
+
+...</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="msprep.html">msprep</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(webshop)
+attach(webshop)
+library("gtools")
+res &lt;- linkfreq(from, to, linkcut = 0.01)
+res
+</pre>
+
+
+
+<hr><div align="center">[Package <em>cmprskWeb</em> version 0.1-0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

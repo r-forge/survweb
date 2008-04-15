@@ -1,0 +1,61 @@
+<html><head><title>Webshop data for multistage competing risks modeling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>webshopms(cmprskWeb)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   webshopms">
+<param name="keyword" value=" Webshop data for multistage competing risks modeling">
+</object>
+
+
+<h2>Webshop data for multistage competing risks modeling</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This data set for multistage computations is prepared with the function <code>msprep()</code>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(webshopms)</pre>
+
+
+<h3>Format</h3>
+
+<p>
+A data frame with 19836 observations on the following 7 variables.
+<dl>
+<dt><code>session</code></dt><dd>Session ID</dd>
+<dt><code>user</code></dt><dd>User ID</dd>
+<dt><code>from</code></dt><dd>Starting page (see details)</dd>
+<dt><code>to</code></dt><dd>Landing page</dd>
+<dt><code>time</code></dt><dd>Dwell time on starting page</dd>
+<dt><code>nvisit</code></dt><dd>visit number within clickstream</dd>
+<dt><code>buy</code></dt><dd>buyer vs. non-buyer</dd>
+</dl>
+
+<h3>Details</h3>
+
+<p>
+The starting pages are prepared in terms of the number of visits within a 
+clickstream, e.g. <code>"1.4"</code> denotes the transitions after the 4th visit of page 1.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(webshopms)
+## maybe str(webshopms) ; plot(webshopms) ...
+</pre>
+
+
+
+<hr><div align="center">[Package <em>cmprskWeb</em> version 0.1-0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

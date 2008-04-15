@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HEAD></HEAD><HTML><BODY>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package cmprskWeb:  Contents">
+<param name="Local" value="00Index.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package cmprskWeb:  R objects">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="cmprskWeb-package">
+<param name="Local" value="cmprskWeb-package.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="cmprskWeb">
+<param name="Local" value="cmprskWeb-package.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="linkfreq">
+<param name="Local" value="linkfreq.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="mscuminc">
+<param name="Local" value="mscuminc.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="msprep">
+<param name="Local" value="msprep.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.mscif">
+<param name="Local" value="mscuminc.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.linkfreq">
+<param name="Local" value="linkfreq.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.mscif">
+<param name="Local" value="mscuminc.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="webshop">
+<param name="Local" value="webshop.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="webshopms">
+<param name="Local" value="webshopms.html">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package cmprskWeb:  Titles">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Competing Risks Models for Web Data ">
+<param name="Local" value="cmprskWeb-package.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Multistage data preparation">
+<param name="Local" value="msprep.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Tests on the cumulative incidence function">
+<param name="Local" value="mscuminc.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Transition frequencies">
+<param name="Local" value="linkfreq.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Webshop Data">
+<param name="Local" value="webshop.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Webshop data for multistage competing risks modeling">
+<param name="Local" value="webshopms.html">
+</OBJECT>
+</UL>
+</UL>
+</BODY></HTML>

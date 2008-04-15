@@ -1,0 +1,79 @@
+<html><head><title>Tests on the cumulative incidence function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>mscuminc(cmprskWeb)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   mscuminc">
+<param name="keyword" value="R:   plot.mscif">
+<param name="keyword" value="R:   print.mscif">
+<param name="keyword" value=" Tests on the cumulative incidence function">
+</object>
+
+
+<h2>Tests on the cumulative incidence function</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Computes the cumulative incidence function (CIF) and performs tests of subgroup equality. 
+It is a wrapper function for <code>cuminc()</code> in the package <code>cmprsk</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mscuminc(msdata, cutpoint = NULL, censoring = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>msdata</code></td>
+<td>
+Data prepared with <code>msprep()</code></td></tr>
+<tr valign="top"><td><code>cutpoint</code></td>
+<td>
+Integer value which denotes the lower dwell time bound</td></tr>
+<tr valign="top"><td><code>censoring</code></td>
+<td>
+If <code>TRUE</code> dwell times larger than cutpoint will be regarded as censored, if <code>FALSE</code> eliminated.</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>msdata</code></td>
+<td>
+Input data after cutpoint treatment</td></tr>
+<tr valign="top"><td><code>msres</code></td>
+<td>
+List with testing results for cumulative incidence function (from <code>cuminc</code>) for each page transition</td></tr>
+</table>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="msprep.html">msprep</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(webshopms)
+library("cmprsk")
+msres &lt;- mscuminc(webshopms, cutpoint = 1000, censoring = TRUE)
+msres
+plot(msres, from = 5.2)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>cmprskWeb</em> version 0.1-0 <a href="00Index.html">Index]</a></div>
+
+</body></html>
