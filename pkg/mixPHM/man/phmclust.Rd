@@ -7,10 +7,10 @@
 \title{Fits mixtures of proportional hazard models}
 \description{This function allows for the computation of proportional hazards models with different distribution assumptions 
 on the underlying baseline hazard. Several options for imposing proportionality restrictions on the hazards are provided.
-This funtction offers several variations of the EM-algorithm regarding the posterior computation in the M-step.
+This function offers several variations of the EM-algorithm regarding the posterior computation in the M-step.
 }
 \usage{
-phmclust(x, K, method = "separate", Sdist = "weibull", EMstart = NA, 
+phmclust(x, K, method = "separate", Sdist = "weibull", cutpoint = NULL, EMstart = NA, 
 EMoption = "classification", EMstop = 0.0001, maxiter = 1000)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -22,6 +22,7 @@ EMoption = "classification", EMstop = 0.0001, maxiter = 1000)
   \code{"main.p"} to variable main effects. \code{"main.gp"} reflects the proportionality assumption over groups
   and variables. \code{"int.gp"} allows for interactions between groups and variables.} 
   \item{Sdist}{Various survival distrubtions such as \code{"weibull"}, \code{"exponential"}, and \code{"rayleigh"}.} 
+  \item{cutpoint}{Integer value with upper bound for observed dwell times. Above this cutpoint, values are regarded as censored. If NULL, no censoring is performed}
   \item{EMstart}{Vector of length n with starting values for group membership, 
   \code{NA} indicates random starting values.}
   \item{EMoption}{\code{"classification"} is based on deterministic cluster assignment, 
@@ -43,6 +44,7 @@ If clusters with only one observation are generated, the algorithm stops.
   \item{Sdist}{Assumed survival distribution}
   \item{likelihood}{Log-likelihood value for each iteration}
   \item{pvisit}{Matrix of prior probabilities due to \code{NA structure}}
+  \item{se.pvisit}{Standard errors for priors}
   \item{shape}{Matrix with shape parameters}
   \item{scale}{Matrix with scale parameters}
   \item{group}{Final deterministic cluster assignment}
@@ -51,10 +53,11 @@ If clusters with only one observation are generated, the algorithm stops.
   \item{aic}{Akaike information criterion}
   \item{bic}{Bayes information criterion}
   \item{clmean}{Matrix with cluster means}
+  \item{se.clmean}{Standard errors for cluster means}
   \item{clmed}{Matrix with cluster medians}
 }
 \references{
-Mair, P., and Hudec, M. (2007). Analysis of dwell times in Web Usage Mining. 
+Mair, P., and Hudec, M. (2008). Analysis of dwell times in Web Usage Mining. 
 Proceedings of the 31st Annual Conference of the German Classification Society 
 on Data Analysis, Machine Learning, and Applications.
 

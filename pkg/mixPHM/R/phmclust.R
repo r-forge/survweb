@@ -1,17 +1,17 @@
 `phmclust` <-
-function(x, K, method="separate", Sdist= "weibull", EMstart=NA, EMoption="classification", 
-EMstop=0.0001, maxiter=1000)
+function(x, K, method = "separate", Sdist = "weibull", cutpoint = NULL, EMstart = NA, EMoption = "classification", EMstop = 0.0001, maxiter = 1000)
 {
 
 # Input:
 #        x ........ n x p data-matrix each column representing dwell-time of an individual
 #                   session in site-area 1 to p. pages not visited should have a dwell time of 0 or NA
 #        K ........ scalar with number of mixture components
-#        method...  denotes the model to be fitted: possible values are "separate", "main.g", "main.p", "int.gp","main.gp", 
+#        method.... denotes the model to be fitted: possible values are "separate", "main.g", "main.p", "int.gp","main.gp", 
 #                   while in method "separate" distributions of individual groups are 
 #                   estimated independently, method "main.g" assumes that there is a common
 #                   base-line hazard which is common to all groups, "main.p" the same for the sites. method "main.gp" 
 #                   fits a main effects model whereas in model "int.gp" allows interaction effects.
+#        cutpoint.. Integer value with upper bound for observed dwell time. Above this cutpoint values are regarded as censored. If NULL, no censoring.   
 #        EMstart .. Vector of length n with starting values for group membership
 #        EMoption.. "classification" is based on the probabilistic cluster assignment, "maximization" on deterministic assignment,
 #                   "randomization" provides a posterior-based randomized cluster assignement. 
@@ -25,6 +25,16 @@ EMstop=0.0001, maxiter=1000)
 
 if (is.data.frame(x)) x <- as.matrix(x)
 if (is.vector(x)) stop("x must be a data frame or a matrix with more than 1 columns!")
+if (is.null(cutpoint)) cutpoint <- max(x, na.rm = TRUE) 
+
+pvisit.est <- (any(is.na(x)) | any(x==0))                          # TRUE if visiting prob estimated
+n <- nrow(x)                                                       # n ... number of sessions
+p <- ncol(x)                                                       # p ... number of site-areas                            
+
+d0 <- s.check(x=x,K=K,n=n,EMstart=EMstart,EMoption=EMoption,method=method,Sdist=Sdist)    #sanity checks
+if (is.data.frame(x)) x <- as.matrix(x)
+if (is.vector(x)) stop("x must be a data frame or a matrix with more than 1 columns!")
+if (is.null(cutpoint)) cutpoint <- max(x, na.rm = TRUE) 
 
 pvisit.est <- (any(is.na(x)) | any(x==0))                          # TRUE if visiting prob estimated
 n <- nrow(x)                                                       # n ... number of sessions
@@ -33,7 +43,14 @@ p <- ncol(x)                                                       # p ... numbe
 d0 <- s.check(x=x,K=K,n=n,EMstart=EMstart,EMoption=EMoption,method=method,Sdist=Sdist)    #sanity checks
 
 x <- d0$x
-EMstart <- d0$EMstart[1:(dim(x)[1])]
+if (is.vector(d0$EMstart)) {
+  EMstart <- d0$EMstart[1:(dim(x)[1])]
+} else {
+  EMstart <- t(apply(d0$EMstart, 1, function(z) z/sum(z)))    #sum 1 normalization
+}
+
+ 
+#EMstart <- d0$EMstart
 method <- d0$method
                                                                                                     
 likelihood <- numeric(maxiter)
@@ -48,7 +65,7 @@ if (EMoption == "classification") {                                  #maximizati
     {
        iter <- iter + 1
        #print(iter)
-       d1 <- Eclass(x, EMstart, K=K, method=method, Sdist=Sdist,p)	     #E-Step maximization
+       d1 <- Eclass(x, EMstart, K = K, method = method, Sdist = Sdist, p, cutpoint = cutpoint)	     #E-Step maximization
        d2 <- Mclass(x, d1$shape,d1$scale,d1$prior,K=K)                    #M-Step maximization
        
        likelihood[iter+1] <- d2$lik.tot                            #likeihood in the current iteration  
@@ -69,7 +86,7 @@ if (EMoption == "maximization") {                                #classification
     while (ConvergEM == FALSE)
     {
        iter <- iter + 1
-       d1 <- Emax(x, EMstart, K=K, method=method, Sdist=Sdist,p)                          #E-Step maximization
+       d1 <- Emax(x, EMstart, K=K, method=method, Sdist=Sdist,p, cutpoint = cutpoint)                          #E-Step maximization
        d2 <- Mmax(x, d1$shape,d1$scale,d1$prior,K=K)                  #M-Step maximization
        
        likelihood[iter+1] <- d2$lik.tot                            #likeihood in the current iteration  
@@ -90,7 +107,7 @@ if (EMoption == "randomization") {                                  #maximizatio
     while (ConvergEM == FALSE)
     {
        iter <- iter + 1
-       d1 <- Eclass(x, EMstart, K=K, method=method, Sdist=Sdist,p)	                   #E-Step randomization (=classification)
+       d1 <- Eclass(x, EMstart, K=K, method=method, Sdist=Sdist,p, cutpoint = cutpoint)	     #E-Step randomization (=classification)
        d2 <- Mrandom(x, d1$shape,d1$scale,d1$prior,K=K)                    #M-Step maximization
        
        likelihood[iter+1] <- d2$lik.tot                            #likeihood in the current iteration  
@@ -119,11 +136,26 @@ likconv <- likelihood[2:(iter+1)]
 aic <- -2*(likelihood[iter+1]-anzpar)
 bic <- (-2*likelihood[iter+1])+anzpar*log(n)
 
-clmean.l <- by(x,newgr,function(y) {apply(y,2,mean)})
+#-------------------- cluster means -----------------
+clmean.l <- by(x,newgr,function(y) {
+                          apply(y,2,function(z) mean(z[z>0]))   #compute cluster means (eliminate x==0)
+                         })
 clmean <- matrix(unlist(clmean.l),nrow=K,byrow=TRUE)
+nobs.cl <- table(newgr)
+se.clmean <- apply(x, 2, function(z1) {                        #standard errors for the cluster means (conditional on the membership)
+               Smat <- tapply(z1, newgr, function(z2) sd(z2[z2>0]))
+               Smat/nobs.cl
+             })
+colnames(clmean) <- colnames(se.clmean) <- colnames(x)
+rownames(clmean) <- rownames(se.clmean) <- paste("Cluster",1:K)
 
-clmed.l <- by(x,newgr,function(y) {apply(y,2,median)})
+#------------------- cluster medians ----------------
+clmed.l <- by(x,newgr,function(y) {
+                        apply(y,2, function(z) median(z[z>0]))
+                      })
 clmed <- matrix(unlist(clmed.l),nrow=K,byrow=TRUE)
+colnames(clmed) <- colnames(x)
+rownames(clmed) <- paste("Cluster",1:K)
 
 if (is.null(colnames(x))) {
   colnames(d1$scale) <- paste("V",1:dim(d1$scale)[2],sep="")
@@ -132,10 +164,17 @@ if (is.null(colnames(x))) {
   colnames(d1$scale) <- colnames(d1$shape) <- colnames(x)
 }
 
-rownames(d1$shape) <- rownames(d1$scale) <- paste("Cluster",1:K,sep="") 
+rownames(d1$shape) <- rownames(d1$scale) <- paste("Cluster", 1:K, sep="")
 
-result <- list(K=K, iter=iter, method=method, Sdist=Sdist, likelihood=likconv,
-     pvisit=d1$prior, shape=d1$shape, scale=d1$scale, group=newgr,posteriors=postmat,npar=anzpar,aic=aic,bic=bic,clmean=clmean,clmed=clmed)
+#------------------- pvisit s.e. ----------------
+pvisit <- d1$prior
+se.pvisit <- apply(pvisit,2, function(z) sqrt(z*(1-z)/nobs.cl))
+colnames(pvisit) <- colnames(se.pvisit) <- colnames(x)
+rownames(pvisit) <- rownames(se.pvisit) <- paste("Cluster",1:K)
+
+result <- list(K=K, iter=iter, method=method, Sdist=Sdist, likelihood=likconv, pvisit = pvisit, se.pvisit = se.pvisit,
+               shape = d1$shape, scale = d1$scale, group = newgr, posteriors = postmat, npar = anzpar, aic = aic, bic = bic,
+               clmean = clmean, se.clmean = se.clmean, clmed = clmed)
 class(result) <- "mws"
 result
 }

@@ -6,9 +6,11 @@ export(screeBIC)
 export(plot.hazard)
 export(plot.survival)
 export(plot.profile)
+export(WilcoxH)
 
 S3method(print, mws)
 S3method(summary, mws)
 S3method(logLik, mws)
 S3method(print, BICmat)
+S3method(print, wilcoxh)
 

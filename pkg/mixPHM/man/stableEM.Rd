@@ -7,7 +7,7 @@ This function performs the clustering for different EM starting values in order
 to find a stable solution.
 }
 \usage{
-stableEM(x, K, numEMstart = 5, method = "separate", Sdist = "weibull", 
+stableEM(x, K, numEMstart = 5, method = "separate", Sdist = "weibull", cutpoint = NULL,
 EMoption = "classification", EMstop = 0.0001, maxiter = 1000, print.likvec = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -20,6 +20,7 @@ EMoption = "classification", EMstop = 0.0001, maxiter = 1000, print.likvec = TRU
   \code{main.p} to the variables main effects. \code{main.gp} reflects the proportionality assumption over groups
   and variables. \code{int.gp} allows for interactions between groups and variables.}
   \item{Sdist}{Various survival distrubtions such as \code{weibull}, \code{exponential}, and \code{rayleigh}.} 
+  \item{cutpoint}{Integer value with upper bound for observed dwell times. Above this cutpoint, values are regarded as censored. If NULL, no censoring is performed}
   \item{EMoption}{\code{classification} is based on deterministic cluster assignment, 
   \code{maximization} on deterministic assignment, and \code{randomization} 
   provides a posterior-based randomized cluster assignement.}  
@@ -42,6 +43,7 @@ The output values refer to this final model.
   \item{Sdist}{Assumed survival distribution}
   \item{likelihood}{Log-likelihood value for each iteration}
   \item{pvisit}{Matrix of prior probabilities due to \code{NA structure}}
+  \item{se.pvisit}{Standard errors for priors}
   \item{shape}{Matrix with shape parameters}
   \item{scale}{Matrix with scale parameters}
   \item{group}{Final deterministic cluster assignment}
@@ -50,6 +52,7 @@ The output values refer to this final model.
   \item{aic}{Akaike information criterion}
   \item{bic}{Bayes information criterion}
   \item{clmean}{Matrix with cluster means}
+  \item{se.clmean}{Standard errors for cluster means}
   \item{clmed}{Matrix with cluster medians}
 }
 

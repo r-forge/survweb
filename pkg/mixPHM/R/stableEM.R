@@ -1,5 +1,5 @@
 `stableEM` <-
-function(x, K, numEMstart = 5, method = "separate", Sdist = "weibull", 
+function(x, K, numEMstart = 5, method = "separate", Sdist = "weibull", cutpoint = NULL,
          EMoption = "classification", EMstop = 0.0001, maxiter = 1000, print.likvec = TRUE)
 #computes survclust models for different starting solutions and selects the best one
 #numEMstart... number of different starting solutions
@@ -15,7 +15,7 @@ EMst.l <- tapply(nuvec,nuvec, function(y) {                            #list wit
           })
 
 reslist <- lapply(EMst.l,function(y) {                                #list of models for different EMstart
-                 res <- phmclust(x=x,K=K,method=method,Sdist=Sdist,EMstart=y,
+                 res <- phmclust(x=x,K=K,method=method,Sdist=Sdist,cutpoint = cutpoint, EMstart=y,
                                   EMoption=EMoption,EMstop=EMstop,maxiter=maxiter)
                  return(res)})
 likvec <- sapply(reslist,function(y) y$likelihood[length(y$likelihood)])   #likelihoods for all models

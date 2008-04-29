@@ -1,5 +1,5 @@
 `Eclass` <-
-function(x, old, K, method, Sdist,p)
+function(x, old, K, method, Sdist,p, cutpoint)
 {
 
 shape <- matrix(NA, K, p)	           # K x p Matrix with Shape-Parameter
@@ -36,11 +36,14 @@ priorl <- by(x,old,function(y) {                           #list of prior probab
                     })
 prior <- matrix(unlist(priorl),ncol=p,byrow=TRUE)                             #matrix of prior probabilities
 
+#------------- separate ----------------------
 if (method=="separate") {  
    parlist <- tapply(1:dim(x)[1],old, function(ind) {
                          y <- as.matrix(x[ind,])
                          apply(y,2,function(z) {
-                            wphm <- survreg(Surv(z[z>0])~1,dist=Sdist)        #wphm for each page within group
+                            censvec <- rep(1, length(z))   
+                            censvec[z > cutpoint] <- 0     #vector for censored data (set to 0)
+                            wphm <- survreg(Surv(z[z>0], censvec[z>0])~1,dist=Sdist)        #wphm for each page within group
                             shapep <- 1/wphm$scale
                             scalep <- exp(wphm$coefficients[1])
                             list(scalep,shapep)

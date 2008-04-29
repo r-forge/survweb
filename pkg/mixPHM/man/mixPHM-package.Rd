@@ -14,8 +14,8 @@ Several survival distributions can be specified. Missing values are allowed. Ind
 \tabular{ll}{
 Package: \tab mixPHM\cr
 Type: \tab Package\cr
-Version: \tab 0.5.1\cr
-Date: \tab 2007-08-02\cr
+Version: \tab 0.5.3\cr
+Date: \tab 2008-04-28\cr
 License: \tab GPL\cr
 }
 }
@@ -25,7 +25,7 @@ Patrick Mair, Marcus Hudec
 Maintainer: Patrick Mair <patrick.mair@wu-wien.ac.at>
 }
 \references{
-Mair, P., and Hudec, M. (2007). Analysis of dwell times in Web Usage Mining. 
+Mair, P., and Hudec, M. (2008). Analysis of dwell times in Web Usage Mining. 
 Proceedings of the 31st Annual Conference of the German Classification Society 
 on Data Analysis, Machine Learning, and Applications.
 
