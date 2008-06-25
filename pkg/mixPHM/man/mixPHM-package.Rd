@@ -14,8 +14,8 @@ Several survival distributions can be specified. Missing values are allowed. Ind
 \tabular{ll}{
 Package: \tab mixPHM\cr
 Type: \tab Package\cr
-Version: \tab 0.6.0\cr
-Date: \tab 2008-05-02\cr
+Version: \tab 0.6.1\cr
+Date: \tab 2008-06-25\cr
 License: \tab GPL\cr
 }
 }
@@ -25,9 +25,9 @@ Patrick Mair, Marcus Hudec
 Maintainer: Patrick Mair <patrick.mair@wu-wien.ac.at>
 }
 \references{
-Mair, P., and Hudec, M. (2008). Analysis of dwell times in Web Usage Mining. 
-Proceedings of the 31st Annual Conference of the German Classification Society 
-on Data Analysis, Machine Learning, and Applications.
+Mair, P., & Hudec, M. (2008). Analysis of dwell times in Web Usage Mining. In C. 
+Preisach, H. Burkhardt, L. Schmidt-Thieme, & R. Decker (eds.), Data Analysis, Machine 
+Learning, and Applications, pp. 593-600. Berlin: Springer.
 
 Kalbfleisch, J.D., and Prentice, R.L. (1980). The statistical analysis of failure 
 time data. New York: Wiley. 

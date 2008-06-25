@@ -18,12 +18,14 @@ if (length(unique(old))!=K) {         #if a cluster doesn't contain any element
 for (j in 1:K) {
   y <- as.matrix(x[old==j,]) 
   ttab <- apply(y,2,table,exclude=0)         #table of dwell-times (list)
-  lvec <- sapply(ttab,length)                #vector with different dwell-times for each page
-  ind0 <- which(lvec<=1)                     #column index for those with less than 2 values
-  rep.el <- sort(unique(as.vector(y)))[2:3]  #elements for 0-replacement (2 smallest except 0)
-  if (length(ind0) >= 1) {
-       for (i in ind0) y[,i][which(y[,i]==0)][1:2] <- rep.el
-       warning("Complete 0 survival times in cluster occured. Two of them are replaced by minimum survival times in order to proceed with estimation!")
+  if (is.list(ttab)) {
+    lvec <- sapply(ttab,length)                #vector with different dwell-times for each page
+    ind0 <- which(lvec<=1)                     #column index for those with less than 2 values
+    rep.el <- sort(unique(as.vector(y)))[2:3]  #elements for 0-replacement (2 smallest except 0)
+    if (length(ind0) >= 1) {
+         for (i in ind0) y[,i][which(y[,i]==0)][1:2] <- rep.el
+         warning("Complete 0 survival times in cluster occured. Two of them are replaced by minimum survival times in order to proceed with estimation!")
+    }
   }
   x[old==j,] <- y
 }
@@ -56,14 +58,16 @@ if (method=="separate") {
    anzpar <- 2*K*p
 }
 
-
+#---------------------- group contrast ----------------------
 if (method=="main.g") {
     for (i in 1:p) {
-       datreg  <- as.vector(x[, i])			#VD-vektor für i-te Seite
-       datreg  <- datreg[x[, i]>0]
-       xold    <- old[x[, i]>0]				#Gruppenvektor für i-te Seite
+       datreg  <- as.vector(x[,i])			#VD-vektor für i-te Seite
+       datreg  <- datreg[x[,i] > 0]
+       censvec <- rep(1, length(datreg))   
+       censvec[datreg > cutpoint] <- 0     #vector for censored data (set to 0)                 
+       xold    <- old[x[,i] > 0]				#Gruppenvektor für i-te Seite
 
-       wphm <- survreg(Surv(datreg)~factor(xold),dist=Sdist)
+       wphm <- survreg(Surv(datreg, censvec)~factor(xold),dist=Sdist)
        scalebase <- as.vector(wphm$coefficients[1])	#scale parameter group 1 (reference group)
        scalevec1 <- as.vector(exp(wphm$coefficients[2:K]+scalebase)) #scale parameter of the remaining groups
        scale [,i] <- c(exp(scalebase),scalevec1)
@@ -72,6 +76,7 @@ if (method=="main.g") {
 anzpar <- K*p+p
 }
 
+#------------- page constasts -----------------
 
 if (method=="main.p") {
     for (j in 1:K)  {
@@ -81,8 +86,10 @@ if (method=="main.p") {
        datreg <- as.vector(datregmat)
        xold <- pagevek[datreg > 0]				#VD > 0
        datreg <- datreg[datreg > 0]
-
-       wphm <- survreg(Surv(datreg)~factor(xold),dist=Sdist)  		#xold bezieht sich auf seiten
+       censvec <- rep(1, length(datreg))   
+       censvec[datreg > cutpoint] <- 0     #vector for censored data (set to 0)                 
+           
+       wphm <- survreg(Surv(datreg, censvec)~factor(xold),dist=Sdist)  		#xold bezieht sich auf seiten
        scalebase <- as.vector(wphm$coefficients[1])
        scalevec1 <- as.vector(exp(wphm$coefficients[2:p]+scalebase))
        scale[j,] <- c(exp(scalebase),scalevec1)
@@ -90,6 +97,8 @@ if (method=="main.p") {
      }
 anzpar <- K*p+K
 }
+
+#------------ page*group interaction  ----------------
 
 if (method=="int.gp") {
     datreg <- as.vector(x)
@@ -99,8 +108,10 @@ if (method=="int.gp") {
     xoldg <- oldall[datreg > 0]				#Gruppencontrast
     xoldp <- pagevek[datreg > 0]			#Seitencontrast
     datreg <- datreg[datreg > 0]
-
-    wphm <- survreg(Surv(datreg)~factor(xoldg)*factor(xoldp),dist=Sdist)
+    censvec <- rep(1, length(datreg))   
+    censvec[datreg > cutpoint] <- 0     #vector for censored data (set to 0)                 
+     
+    wphm <- survreg(Surv(datreg, censvec)~factor(xoldg)*factor(xoldp),dist=Sdist)
     scalebase <- as.vector(exp(wphm$coefficients[1]))
     scaleg <- exp(c(0,wphm$coefficient[2:K]))		#group contrast
     scalep <- exp(c(0,wphm$coefficient[(K+1):(K+p-1)])) #page contrast
@@ -112,6 +123,8 @@ if (method=="int.gp") {
     anzpar <- K*p+1
 }
 
+#------------------ page + group main effects ----------------
+
 if (method=="main.gp") {
     datreg <- as.vector(x)
     nsess <- dim(x)[1]
@@ -120,8 +133,10 @@ if (method=="main.gp") {
     xoldg <- oldall[datreg > 0]				#Gruppencontrast
     xoldp <- pagevek[datreg > 0]			#Seitencontrast
     datreg <- datreg[datreg > 0]
-
-    wphm <- survreg(Surv(datreg)~factor(xoldg)+factor(xoldp),dist=Sdist)
+    censvec <- rep(1, length(datreg))   
+    censvec[datreg > cutpoint] <- 0     #vector for censored data (set to 0)                 
+    
+    wphm <- survreg(Surv(datreg, censvec)~factor(xoldg)+factor(xoldp),dist=Sdist)
     scalebase <- as.vector(exp(wphm$coefficients[1]))
     scaleg <- exp(c(0,wphm$coefficient[2:K]))		#group contrast
     scalep <- exp(c(0,wphm$coefficient[(K+1):(K+p-1)]))	#page contrast
@@ -130,7 +145,7 @@ if (method=="main.gp") {
     anzpar <- K+p
 }
 
-list (scale=scale,shape=shape,prior=prior,anzpar=anzpar)
+list (scale = scale, shape = shape, prior = prior, anzpar = anzpar)
 }
 
 #returns matrices with shape and scale parameters as well as prior matrix

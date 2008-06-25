@@ -14,6 +14,6 @@ if (any(is.na(col))) col <- 1:lx
 
 matplot(x$K,t(x$BICmat),type=type,lty=lty,col=col,main=main,xlab=xlab,
         ylab=ylab,pch=19,xaxp = c(min(x$K),max(x$K),length(x$K)-1),...)
-legend(legpos,lty=lty,col=col,legend=x$method)
+#legend(legpos,lty=lty,col=col,legend=x$method)
 }
 

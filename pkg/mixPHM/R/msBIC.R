@@ -1,6 +1,6 @@
 `msBIC` <-
-function(x, K, method = "all", Sdist="weibull", EMoption="classification",
-                  EMstop=0.0001, maxiter=1000)
+function(x, K, method = "all", Sdist="weibull", cutpoint = NULL, EMoption="classification",
+                  EMstop=0.01, maxiter=100)
 {
 
 # Input:
@@ -25,7 +25,7 @@ for (i in 1:length(method)) {
   mi <- method[i]
   for (j in 1:length(K)) {
     Kj <- K[j]
-    resall <- phmclust(x,K=Kj,method=mi,Sdist=Sdist,EMstart=NA,EMoption=EMoption,EMstop=EMstop, maxiter=maxiter)
+    resall <- phmclust(x,K=Kj,method=mi,Sdist=Sdist,cutpoint = cutpoint, EMstart=NA,EMoption=EMoption,EMstop=EMstop, maxiter=maxiter)
     BICmat[i,j] <- resall$bic
   }
 }

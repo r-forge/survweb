@@ -6,7 +6,7 @@
 \description{This function fits models for different proportionality restrictions.
 }
 \usage{
-msBIC(x, K, method = "all", Sdist = "weibull", EMoption = "classification", EMstop = 0.0001, maxiter = 1000)
+msBIC(x, K, method = "all", Sdist = "weibull", cutpoint = NULL, EMoption = "classification", EMstop = 0.01, maxiter = 100)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +17,7 @@ msBIC(x, K, method = "all", Sdist = "weibull", EMoption = "classification", EMst
   \code{"main.p"} to the variables main effects. \code{"main.gp"} reflects the proportionality assumption over groups
   and variables. \code{"int.gp"} allows for interactions between groups and variables. If method is \code{"all"}, each model is fitted.}
   \item{Sdist}{Various survival distrubtions such as \code{"weibull"}, \code{"exponential"}, and \code{"rayleigh"}.} 
+  \item{cutpoint}{Cutpoint for censoring}
   \item{EMoption}{\code{"classification"} is based on deterministic cluster assignment, 
   \code{"maximization"} on deterministic assignment, and \code{"randomization"} 
   provides a posterior-based randomized cluster assignement.}  

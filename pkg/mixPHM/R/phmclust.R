@@ -1,5 +1,5 @@
 `phmclust` <-
-function(x, K, method = "separate", Sdist = "weibull", cutpoint = NULL, EMstart = NA, EMoption = "classification", EMstop = 0.0001, maxiter = 1000)
+function(x, K, method = "separate", Sdist = "weibull", cutpoint = NULL, EMstart = NA, EMoption = "classification", EMstop = 0.01, maxiter = 100)
 {
 
 # Input:
@@ -25,16 +25,9 @@ function(x, K, method = "separate", Sdist = "weibull", cutpoint = NULL, EMstart 
 
 if (is.data.frame(x)) x <- as.matrix(x)
 if (is.vector(x)) stop("x must be a data frame or a matrix with more than 1 columns!")
-if (is.null(cutpoint)) cutpoint <- max(x, na.rm = TRUE) 
+if (is.vector(x)) x <- cbind(x)
 
-pvisit.est <- (any(is.na(x)) | any(x==0))                          # TRUE if visiting prob estimated
-n <- nrow(x)                                                       # n ... number of sessions
-p <- ncol(x)                                                       # p ... number of site-areas                            
-
-d0 <- s.check(x=x,K=K,n=n,EMstart=EMstart,EMoption=EMoption,method=method,Sdist=Sdist)    #sanity checks
-if (is.data.frame(x)) x <- as.matrix(x)
-if (is.vector(x)) stop("x must be a data frame or a matrix with more than 1 columns!")
-if (is.null(cutpoint)) cutpoint <- max(x, na.rm = TRUE) 
+#if (is.null(cutpoint)) cutpoint <- max(x, na.rm = TRUE)           
 
 pvisit.est <- (any(is.na(x)) | any(x==0))                          # TRUE if visiting prob estimated
 n <- nrow(x)                                                       # n ... number of sessions
@@ -69,6 +62,7 @@ if (EMoption == "classification") {                                  #maximizati
        d2 <- Mclass(x, d1$shape,d1$scale,d1$prior,K=K)                    #M-Step maximization
        
        likelihood[iter+1] <- d2$lik.tot                            #likeihood in the current iteration  
+       #print(d2$lik.tot)
        
        if ((iter >= maxiter) || (abs(likelihood[iter+1]-likelihood[iter]) < EMstop)) {   
           ConvergEM <- TRUE 
@@ -123,7 +117,7 @@ newgr <- d2$newgr
 }
 #========================================================================
 
-if ((iter == maxiter) && (maxiter == 1000)) warning("EM did not converge! Maximum iteration limit reached!")
+if (iter >= maxiter) warning("EM did not converge! Maximum iteration limit reached!")
 
 if (pvisit.est) { 
    anzpar <- d1$anzpar + K*p       #if NA's in x --> number of estimated visiting probabilities added
@@ -143,11 +137,25 @@ clmean.l <- by(x,newgr,function(y) {
 clmean <- matrix(unlist(clmean.l),nrow=K,byrow=TRUE)
 nobs.cl <- table(newgr)
 se.clmean <- apply(x, 2, function(z1) {                        #standard errors for the cluster means (conditional on the membership)
-               Smat <- tapply(z1, newgr, function(z2) sd(z2[z2>0]))
-               Smat/nobs.cl
+               Smat <- tapply(z1, newgr, function(z2) {
+                                           if (!is.null(z2[z2 > 0])) {
+                                               sd(z2[z2>0], na.rm = TRUE)   #sample sd
+                                             } else {
+                                               return(NA)
+                                             }
+                                         })
+               nobsmat <- tapply(z1, newgr, function(z3) {
+                                           if (!is.null(z3[z3 > 0])) {
+                                              length(z3[z3>0])   #number of observations
+                                            } else {
+                                              return(NA)
+                                            }
+                                         })
+               Smat/sqrt(nobsmat)                              #s/sqrt(n)
              })
 colnames(clmean) <- colnames(se.clmean) <- colnames(x)
 rownames(clmean) <- rownames(se.clmean) <- paste("Cluster",1:K)
+#se.clmean <- NULL
 
 #------------------- cluster medians ----------------
 clmed.l <- by(x,newgr,function(y) {
