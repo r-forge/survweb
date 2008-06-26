@@ -24,7 +24,6 @@ function(x, K, method = "separate", Sdist = "weibull", cutpoint = NULL, EMstart 
 # Packages Needed: MASS, Survival
 
 if (is.data.frame(x)) x <- as.matrix(x)
-if (is.vector(x)) stop("x must be a data frame or a matrix with more than 1 columns!")
 if (is.vector(x)) x <- cbind(x)
 
 #if (is.null(cutpoint)) cutpoint <- max(x, na.rm = TRUE)           

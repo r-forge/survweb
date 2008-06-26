@@ -14,8 +14,8 @@ Several survival distributions can be specified. Missing values are allowed. Ind
 \tabular{ll}{
 Package: \tab mixPHM\cr
 Type: \tab Package\cr
-Version: \tab 0.6.1\cr
-Date: \tab 2008-06-25\cr
+Version: \tab 0.6.2\cr
+Date: \tab 2008-06-26\cr
 License: \tab GPL\cr
 }
 }
