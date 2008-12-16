@@ -24,9 +24,8 @@ function(x, K, method = "separate", Sdist = "weibull", cutpoint = NULL, EMstart 
 # Packages Needed: MASS, Survival
 
 if (is.data.frame(x)) x <- as.matrix(x)
-if (is.vector(x)) x <- cbind(x)
-
-#if (is.null(cutpoint)) cutpoint <- max(x, na.rm = TRUE)           
+if (is.vector(x)) stop("x must be a data frame or a matrix with more than 1 columns!")
+if (is.null(cutpoint)) cutpoint <- max(x, na.rm = TRUE) 
 
 pvisit.est <- (any(is.na(x)) | any(x==0))                          # TRUE if visiting prob estimated
 n <- nrow(x)                                                       # n ... number of sessions
@@ -61,7 +60,6 @@ if (EMoption == "classification") {                                  #maximizati
        d2 <- Mclass(x, d1$shape,d1$scale,d1$prior,K=K)                    #M-Step maximization
        
        likelihood[iter+1] <- d2$lik.tot                            #likeihood in the current iteration  
-       #print(d2$lik.tot)
        
        if ((iter >= maxiter) || (abs(likelihood[iter+1]-likelihood[iter]) < EMstop)) {   
           ConvergEM <- TRUE 

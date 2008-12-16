@@ -8,13 +8,14 @@ for (k in 1:K) {
   prior.vec <- prior[k,]
 
   likmat <- t(apply(x,1,function(y){
+                    #la.vec <- prior.vec*(mapply(dllogis,y,shape.vec,scale=scale.vec))
+                    #la.vec <- prior.vec*(mapply(dlnorm,y,scale.vec,shape.vec))
                     la.vec <- prior.vec*(mapply(dweibull,y,shape.vec,scale.vec))        #pages visited by session  (for weibull, exponential, and rayleigh
                     
                     la.vec[is.na(la.vec)] <- 0
                     la.vec[la.vec==0|la.vec==Inf] <- 1-prior.vec[la.vec==0|la.vec==Inf] #dweibull either 0 or Inf for 0 dwell time (pages not visited by session)
                     return(la.vec)
                     }))
-  if ((dim(likmat)[1]) == 1) likmat <- t(likmat) #sanity check if x is vector (only 1 page)
   likmat <- log(likmat)
   lik <- cbind(lik,apply(likmat,1,sum))        #multiplying prob over pages
 }

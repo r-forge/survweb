@@ -14,12 +14,6 @@ if ((EMoption=="maximization") && (method!="separate")) {
   method <- "separate"
 }
 
-if ((dim(x)[2]) == 1) {
-  if ((method == "main.p") || (method == "main.gp") || (method == "int.gp")) {
-    stop("For these data only separate or main.g are admissible!")
-  }
-}
-
 if (!any(Sdist==c("weibull", "exponential", "rayleigh")))
   stop("Sdist must be element of (weibull, exponential, rayleigh).")
 
@@ -29,7 +23,6 @@ x[is.na(x)==TRUE] <- 0                                        #replace NA's by 0
 
 if (any(rowSums(x)==0)) {                                     #eliminate sessions with all 0 dwell times
   x <- x[rowSums(x)!=0,]
-  if (is.vector(x)) x <- cbind(x) 
   warning("Subjects with no visit were eliminated!")
   }
 
@@ -40,8 +33,8 @@ if (any(colSums(x)==0)) {                                    #eliminate pages no
 
 #starting values for EMstart
 if (length(EMstart)==1) {
-  EMstart <- sample(1:K, dim(x)[1], replace=TRUE)                     #same starting values for all models
-} else if (length(EMstart) != (dim(x)[1])) {
+  EMstart <- sample(1:K, n, replace=TRUE)                     #same starting values for all models
+} else if (length(EMstart) != n) {
    stop("Mismatch between EMstart and number of subjects!")
 } else if (max(EMstart)!=K) {
    stop("Number of defined groups in EMstart doesn't correspond to K!")
@@ -49,8 +42,8 @@ if (length(EMstart)==1) {
   
 
 if (EMoption == "maximization") {
-  nullmat <- matrix(rep(0,(dim(x)[1])*K),ncol=K)  
-  nullmat[cbind(1:(dim(x)[1]),EMstart)] <- 1                     #converting EMstart vector into 0/1 matrix
+  nullmat <- matrix(rep(0,n*K),ncol=K)  
+  nullmat[cbind(1:n,EMstart)] <- 1                            #converting EMstart vector into 0/1 matrix
   EMstart <- abs(jitter(nullmat))                             
 }
 

@@ -18,14 +18,12 @@ if (length(unique(old))!=K) {         #if a cluster doesn't contain any element
 for (j in 1:K) {
   y <- as.matrix(x[old==j,]) 
   ttab <- apply(y,2,table,exclude=0)         #table of dwell-times (list)
-  if (is.list(ttab)) {
-    lvec <- sapply(ttab,length)                #vector with different dwell-times for each page
-    ind0 <- which(lvec<=1)                     #column index for those with less than 2 values
-    rep.el <- sort(unique(as.vector(y)))[2:3]  #elements for 0-replacement (2 smallest except 0)
-    if (length(ind0) >= 1) {
-         for (i in ind0) y[,i][which(y[,i]==0)][1:2] <- rep.el
-         warning("Complete 0 survival times in cluster occured. Two of them are replaced by minimum survival times in order to proceed with estimation!")
-    }
+  lvec <- sapply(ttab,length)                #vector with different dwell-times for each page
+  ind0 <- which(lvec<=1)                     #column index for those with less than 2 values
+  rep.el <- sort(unique(as.vector(y)))[2:3]  #elements for 0-replacement (2 smallest except 0)
+  if (length(ind0) >= 1) {
+       for (i in ind0) y[,i][which(y[,i]==0)][1:2] <- rep.el
+       warning("Complete 0 survival times in cluster occured. Two of them are replaced by minimum survival times in order to proceed with estimation!")
   }
   x[old==j,] <- y
 }

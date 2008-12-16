@@ -5,8 +5,8 @@
 \alias{logLik.mws}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Fits mixtures of proportional hazard models}
-\description{This function allows for the computation of multivariable proportional hazards models with different distribution assumptions 
-on the underlying baseline hazard. Missing data are allowed. Several options for imposing proportionality restrictions on the hazards are provided.
+\description{This function allows for the computation of proportional hazards models with different distribution assumptions 
+on the underlying baseline hazard. Several options for imposing proportionality restrictions on the hazards are provided.
 This function offers several variations of the EM-algorithm regarding the posterior computation in the M-step.
 }
 \usage{
@@ -15,7 +15,7 @@ EMoption = "classification", EMstop = 0.01, maxiter = 100)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{Data frame or matrix of dimension n*p with survival times (\code{NA}'s allowed). In the univariate case a vector can be specified.}
+  \item{x}{Data frame or matrix of dimension n*p with survival times (\code{NA}'s allowed).}
   \item{K}{Number of mixture components.} 
   \item{method}{Imposing proportionality restrictions on the hazards: 
   With \code{"separate"} no restrictions are imposed, \code{"main.g"} relates to a group main effect, 
@@ -57,8 +57,9 @@ If clusters with only one observation are generated, the algorithm stops.
   \item{clmed}{Matrix with cluster medians}
 }
 \references{
-Mair, P., & Hudec, M. (2008). Analysis of dwell times in Web Usage Mining. In C. Preisach, H. Burkhardt, L. Schmidt-Thieme, & 
-R. Decker (eds.), Data Analysis, Machine Learning, and Applications, pp. 593-600. Berlin: Springer.
+Mair, P., and Hudec, M. (2008). Analysis of dwell times in Web Usage Mining. 
+Proceedings of the 31st Annual Conference of the German Classification Society 
+on Data Analysis, Machine Learning, and Applications.
 
 Collett, D. (2003). Modelling Survival Data in Medical Research. Boca Raton, FL: Chapman & Hall.
 
