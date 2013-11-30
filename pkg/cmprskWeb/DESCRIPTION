@@ -1,11 +1,11 @@
 Package: cmprskWeb
 Type: Package
 Title: Multistage Competing Risks Analysis for Web data
-Version: 0.1-2
-Date: 2008-04-08
+Version: 0.2-0
+Date: 2013-11-01
 Author: Patrick Mair
 Maintainer: Patrick Mair <patrick.mair@wu-wien.ac.at>
 Description: This package enhances the cmprsk package for Web data. Additional S3 methods for competing risks regression and cumulative incidence function are provided. Futhermore it allows for the computation of multistage competing risks settings. Various utiliy functions for Web data are implemented.
-Depends: R (>= 2.5.0), cmprsk, gtools
+Depends: R (>= 3.0.0), cmprsk, gtools
 URL: http://r-forge.r-project.org/projects/survweb/
 License: GPL

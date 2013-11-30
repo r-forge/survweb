@@ -29,7 +29,6 @@ are taken into account for frequency computation.
 \examples{
 data(webshop)
 attach(webshop)
-library("gtools")
 res <- linkfreq(from, to, linkcut = 0.01)
 res
 }

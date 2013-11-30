@@ -1,0 +1,16 @@
+import("stats", "graphics", "cmprsk", "gtools")
+export(crrprep)
+export(linkfreq)
+export(mscuminc)
+export(msprep)
+
+S3method(print, linkfreq)
+S3method(print, mscif)
+S3method(plot, mscif)
+
+
+
+
+
+
+

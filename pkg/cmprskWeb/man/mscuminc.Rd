@@ -25,7 +25,6 @@ mscuminc(msdata, cutpoint = NULL, censoring = TRUE)
 \seealso{\code{\link{msprep}}}
 \examples{
 data(webshopms)
-library("cmprsk")
 msres <- mscuminc(webshopms, cutpoint = 1000, censoring = TRUE)
 msres
 plot(msres, from = 5.2)

@@ -19,7 +19,7 @@ function(x, from, main = paste("CIF from ",from), curvlab, ylim = c(0, 1), xlim,
   if (missing(curvlab)) curvlab <- names(plotres[[2]])[-(length(names(plotres[[2]])))]
   if (missing(xlim)) xlim <- c(0,100)
    
-  plot.cuminc(plotres[[2]], xlab = xlab, ylab = ylab, main = main, color = color,
+  plot(plotres[[2]], xlab = xlab, ylab = ylab, main = main, color = color,
               curvlab = curvlab, wh = wh, lwd = lwd, ylim = ylim, xlim = xlim,...)
 
 }

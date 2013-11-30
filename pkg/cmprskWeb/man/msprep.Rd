@@ -17,9 +17,7 @@ msprep(linkdata, linkfreq.res, stage.depth = 2, elim = TRUE, sess = TRUE)
   successive PI's go into last stage}
   \item{sess}{If \code{TRUE}, analysis is performed at session level, otherwise at user level}
 }
-\details{
-  ~~ If necessary, more details than the description above ~~
-}
+
 \value{Returns a data frame suited for multistage competing risks modeling.
 }
 
@@ -27,7 +25,6 @@ msprep(linkdata, linkfreq.res, stage.depth = 2, elim = TRUE, sess = TRUE)
 \examples{
 data(webshop)
 webshopsub <- webshop[1:1000,]
-library("gtools")
 freqsub <- linkfreq(webshopsub[,3], webshopsub[,4])
 msdata <- msprep(webshopsub, freqsub, stage.depth = 4)
 }
